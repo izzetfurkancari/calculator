@@ -14,31 +14,54 @@ function updateDisplay() {
 
 keys.addEventListener("click",(event)=>{
     const element = event.target;
+    const value = element.value;
 
     if(!element.matches("button")) return;
 
-    if(element.classList.contains("operator")) {
-        // console.log("operator", element.value);
-        handleOperator(element.value);  
-        updateDisplay();
-        return
+    // short way w switch case
+
+    switch(value) {
+        case '+':
+        case '-':
+        case '*':
+        case '/':
+        case '=':
+            handleOperator(value);
+            break;
+        case '.':
+            inputDecimal();
+            break;
+        case 'clear':
+            clear();
+            break;
+        default:
+            inputNumber(element.value);
     }
-    if(element.classList.contains("decimal")) {
-        // console.log("decimal", element.value);
-        inputDecimal();
-        updateDisplay();
-        return
-    }
-    if(element.classList.contains("clear")) {
-        clear();
-        updateDisplay();
-        // console.log("clear", element.value);
-        return
-    }
+
+    // long way w if / else
+
+    // if(element.classList.contains("operator")) {
+    //     // console.log("operator", element.value);
+    //     handleOperator(element.value);  
+    //     updateDisplay();
+    //     return
+    // }
+    // if(element.classList.contains("decimal")) {
+    //     // console.log("decimal", element.value);
+    //     inputDecimal();
+    //     updateDisplay();
+    //     return
+    // }
+    // if(element.classList.contains("clear")) {
+    //     clear();
+    //     updateDisplay();
+    //     // console.log("clear", element.value);
+    //     return
+    // }
 
     //console.log(element.value);
 
-    inputNumber(element.value)
+    // inputNumber(element.value)
     updateDisplay()
 })
 
@@ -51,16 +74,17 @@ function handleOperator(nextOperator) {
     }
 
     if(firstValue == null) {
-        firstValue = displayValue
+        firstValue = value
     } else if (operator) {
         const result = calculate(firstValue, value, operator);
 
-        displayValue = `${parseFloat(result.toFixed(7))}`
+        displayValue = `${parseFloat(result.toFixed(7))}`;
         firstValue = result;
     }
 
     waitingForSecondValue = true;
     operator = nextOperator;
+    
     console.log(displayValue, firstValue, operator, waitingForSecondValue);
 }
 
